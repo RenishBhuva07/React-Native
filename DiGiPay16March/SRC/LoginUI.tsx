@@ -11,21 +11,14 @@ export interface SendUIProps {
     onGetFocus: () => void,
     onGetBlur: () => void,
     Error: string,
-    // onOtpChange: () => void;
-    pin: string[];
     onGetOtp: () => void,
-    onChangeOtp: (text: string, index: number) => void;
 
-    // onOtpFocus: (index: number) => void;
-    // onOtpBlur: (index) => void;
+    // pin: string[];
+    // onChangeOtp: (text: string, index: number) => void;
+    // activeIndex: number;
+    OtpInputs: any;
 
     onPressLogin: () => void;
-
-
-    // otp: string[];
-    // activeIndex: any;
-    // isFocused: boolean;
-
 }
 
 class LoginUI extends Component<SendUIProps> {
@@ -35,16 +28,14 @@ class LoginUI extends Component<SendUIProps> {
     }
 
     render() {
-
-        const isFocused = this.props.isFocus;
-        const Error_Color = isFocused ? styles.focusedInput : styles.bluredInput;
-        // console.warn(this.props.pin);
-        // const Pin = this.props.pin;
+        const otpRef = React.createRef();
         const {
-            onChangeOtp,
-            // onOtpFocus
+            Error,
+            isFocus,
+            OtpInputs,
         } = this.props;
 
+        const Error_Color = isFocus ? styles.focusedInput : styles.bluredInput;
         return (
             <View>
                 {/* Heading */}
@@ -63,16 +54,17 @@ class LoginUI extends Component<SendUIProps> {
                     style={[styles.textInput, Error_Color]}
                     value={this.props.contactNumber}
                     onChangeText={(text: string) => { this.props.onChangeContactNumber(text); }}
-                    onFocus={() => { this.props.onGetFocus; }}
-                    onBlur={() => { this.props.onGetBlur; }}
+                    onFocus={this.props.onGetFocus}
+                    onBlur={this.props.onGetBlur}
                 >
                 </TextInput>
-                {this.props.Error !== '' && <Text style={styles.error}>{this.props.Error}</Text>}
+                <Text style={styles.error}>{Error != "" && Error}</Text>
+                {/* {Error !== '' && <Text style={styles.error}>{Error}</Text>} */}
 
                 {/* Get OTP Button */}
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => { this.props.onGetOtp; }}>
+                    onPress={this.props.onGetOtp}>
 
                     <Text style={styles.buttonText}>
                         {login.Get_Otp_Button}
@@ -80,17 +72,11 @@ class LoginUI extends Component<SendUIProps> {
 
                 </TouchableOpacity>
 
-
-
-                <OtpBox
-                    pin={this.props.pin}
-                    handleOTPChange={onChangeOtp}
-                // handleOTPFocus={onOtpFocus}
-                />
+                <OtpBox OTPInputs={OtpInputs} />
 
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => { this.props.onPressLogin }}
+                    onPress={this.props.onPressLogin}
                 >
 
                     <Text style={[styles.buttonText, styles.loginText]}>

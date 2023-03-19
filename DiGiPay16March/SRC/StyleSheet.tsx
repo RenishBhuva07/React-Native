@@ -2,17 +2,15 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     heading_container: {
-        // display: 'flex',
         backgroundColor: 'red',
-        height: 275,
+        height: 240,
         width: '100%',
         borderBottomRightRadius: 50,
         borderBottomLeftRadius: 50,
     },
     Heading: {
         fontWeight: '600',
-        marginTop: 200,
-        // color: 'white',
+        marginTop: 170,
         fontSize: 45,
         textAlign: 'center',
     },
@@ -21,28 +19,23 @@ const styles = StyleSheet.create({
     },
     label: {
         color: 'red',
-        marginTop: 50,
+        marginTop: 30,
         fontSize: 25,
         textAlign: 'center',
     },
     textInput: {
         textAlign: 'center',
         borderWidth: 2,
-        borderColor: 'white',
-        borderBottomColor: 'black',
-        borderTopColor: 'black',
-        // backgroundColor:'green',
         marginHorizontal: 20,
         marginVertical: 5,
         borderRadius: 5,
         fontSize: 20,
-        // color: 'white'
     },
     focusedInput: {
         borderColor: 'red',
     },
     bluredInput: {
-        borderColor: 'white',
+        borderColor: 'black',
     },
     button: {
         alignSelf: 'center',
@@ -56,7 +49,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '500',
         textAlign: 'center',
-        // color: 'white',
     },
     otpContainer: {
         flexDirection: 'row',
@@ -67,21 +59,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderWidth: 2,
         borderColor: 'black',
-        // padding: 10,
         marginHorizontal: 5,
         borderRadius: 5,
         width: 50,
         fontSize: 20,
     },
-    activeBox: {
-        // color: 'white',
-        borderColor: 'red',
-    },
     loginButton: {
         backgroundColor: 'red',
         width: '100%',
         height: 150,
-        marginTop: 95,
+        marginTop: 70,
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
     },
@@ -92,6 +79,7 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginBottom: 10,
+        textAlign: 'center'
     },
 });
 

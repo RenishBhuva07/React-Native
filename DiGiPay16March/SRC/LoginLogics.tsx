@@ -1,13 +1,15 @@
 import { Component } from "react";
-import { Text, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import LoginUI from "./LoginUI";
 
-interface IProps { }
+interface IProps {
+    navigation: any
+}
 interface IState {
     mobilenumber: string;
     isFocused: boolean;
-    otp: string[];
-    error: string
+    error: string;
+    // CheckValid: boolean
 }
 
 class LoginLogics extends Component<IProps, IState>{
@@ -18,54 +20,84 @@ class LoginLogics extends Component<IProps, IState>{
         this.state = {
             mobilenumber: '',
             isFocused: false,
-            otp: ['', '', '', ''],
             error: '',
+            // CheckValid: false
         };
     }
+
+
     handleMobileChange = (text: string) => {
         this.setState({ mobilenumber: text });
+
+        const { mobilenumber } = this.state;
+        if (mobilenumber.length == 9) {
+            this.setState({ error: '' });
+        }
     };
     handleFocus = () => {
         this.setState({ isFocused: true });
+
     };
     handleBlur = () => {
         this.setState({ isFocused: false });
+        // console.warn("calledd");
     };
     // handler for "Get OTP" button press
     private otpInputs: TextInput[] = [];
     handleGetOTP = () => {
-        if (this.otpInputs[0]) {
-            this.otpInputs[0].focus();
+        const { mobilenumber } = this.state;
+
+        if (mobilenumber.trim() === '') {
+            this.setState({ error: 'Mobile Number Required' });
+        } else if (!/^[0-9]+$/.test(mobilenumber)) {
+            this.setState({ error: 'Invalid Phone Number' });
+        } else if (mobilenumber.length < 10) {
+            this.setState({ error: 'Must Be 10 Characters' });
+        } else {
+            this.setState({ error: '' });
+            if (this.otpInputs[0]) {
+                this.otpInputs[0].focus();
+            }
         }
+
+
     };
-    handleOTPChange = (text: string, index: number) => {
-        const { otp } = this.state;
-        otp[index] = text;
-        this.setState({ otp });
-        if (text.length === 1 && index < 3 && this.otpInputs[index + 1]) {
-            this.otpInputs[index + 1].focus();
-        }
-    };
-    // handler OTP Boxes Focuse 
-    // handleOTPBoxFocus = (index: number) => {
-    //     this.setState({activeIndex: index});
-    // };
-    // // handler OTP Boxes Blur 
-    // handleOTPBoxBlur = () => {
-    //     this.setState({activeIndex: -1});
-    // };
+
     handleLoginAndValidate = () => {
         const { mobilenumber } = this.state;
 
         if (mobilenumber.trim() === '') {
             this.setState({ error: 'Mobile Number Required' });
+        } else if (!/^[0-9]+$/.test(mobilenumber)) {
+            this.setState({ error: 'Invalid Phone Number' });
         } else if (mobilenumber.length < 10) {
             this.setState({ error: 'Must Be 10 Characters' });
         } else {
-            // do something on login button press, e.g. send mobileNumber to server
-            console.warn('Logging in with mobile number' + mobilenumber);
+            this.setState({ error: '', mobilenumber: '' });
+            this.props.navigation.navigate('Dashboard')
+            console.warn('Logged In');
         }
+
+        // (this.state.CheckValid == true) ? this.props.navigation.navigate('Dashboard') : false;
+
     };
+
+    // handleValidate = () => {
+    //     const { mobilenumber } = this.state;
+
+    //     if (mobilenumber.trim() === '') {
+    //         this.setState({ error: 'Mobile Number Required', CheckValid: false });
+    //     } else if (!/^[0-9]+$/.test(mobilenumber)) {
+    //         this.setState({ error: 'Invalid Phone Number', CheckValid: false });
+    //     } else if (mobilenumber.length < 10) {
+    //         this.setState({ error: 'Must Be 10 Characters', CheckValid: false });
+    //     } else {
+    //         // do something on login button press, e.g. send mobileNumber to server
+    //         this.setState({ error: '', mobilenumber: '', CheckValid: true });
+    //         // this.setState({ mobilenumber: '' });
+    //         // console.warn('Logged In');
+    //     }
+    // };
 
     render() {
         return (
@@ -74,21 +106,15 @@ class LoginLogics extends Component<IProps, IState>{
                     isFocus={this.state.isFocused}
                     contactNumber={this.state.mobilenumber}
                     onChangeContactNumber={(text: string) => { this.handleMobileChange(text); }}
-                    onGetFocus={() => { this.handleFocus; }}
-                    onGetBlur={() => { this.handleBlur; }}
+                    onGetFocus={() => this.handleFocus()}
+                    onGetBlur={() => this.handleBlur()}
                     Error={this.state.error}
+                    onGetOtp={() => { this.handleGetOTP(); }}
 
-                    onGetOtp={() => { this.handleGetOTP; }}
-                    pin={this.state.otp}
-                    onChangeOtp={() => this.handleOTPChange}
-                    // onOtpFocus={() => {this.handleOTPBoxFocus;}}
-                    // onOtpBlur={() => {this.handleOTPBoxBlur;}}
-                    onPressLogin={() => { this.handleLoginAndValidate }}
+                    onPressLogin={() => { this.handleLoginAndValidate(); }}
 
-
-
+                    OtpInputs={this.otpInputs}
                 />
-                {/* <Text>{this.state.isFocused}</Text> */}
             </>
         );
     }
@@ -96,3 +122,6 @@ class LoginLogics extends Component<IProps, IState>{
 }
 
 export default LoginLogics;
+
+// https://code.tutsplus.com/tutorials/common-react-native-app-layouts-login-page--cms-27639
+// https://medium.com/@mdeepikayadav029/side-menu-bar-after-login-screen-in-react-native-4cabee7ca2b0
